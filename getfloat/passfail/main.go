@@ -1,3 +1,4 @@
+// For a grade between 0 and 100, print whether it is passing or failing.
 package main
 
 import (

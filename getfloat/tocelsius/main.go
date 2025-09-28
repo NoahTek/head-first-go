@@ -1,3 +1,4 @@
+// Converts temperature entered in Fahrenheit to Celsius.
 package main
 
 import (
@@ -14,6 +15,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	celcius := (fahrenheit - 32) * 5 / 9
-	fmt.Printf("%.2f degree celcius.", celcius)
+	celsius := (fahrenheit - 32) * 5 / 9
+	fmt.Printf("%.2f degree celsius.", celsius)
 }
