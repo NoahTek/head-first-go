@@ -2,34 +2,42 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 )
 
-func scanDirectory(path string) error {
+func reportPanic() {
+	p := recover()
+	if p == nil {
+		return
+	}
+	err, ok := p.(error)
+	if ok {
+		fmt.Println(err)
+	} else {
+		panic(p) // for unanticipated panics or if type assertions fails.
+	}
+}
+
+func scanDirectory(path string) {
 	fmt.Println("│\n📁", path)
 	files, err := os.ReadDir(path)
 	if err != nil {
-		return err
+		panic(err)
 	}
 	for _, file := range files {
 		filePath := filepath.Join(path, file.Name())
 		if file.IsDir() {
-			err := scanDirectory(filePath)
-			if err != nil {
-				return err
-			}
+			scanDirectory(filePath)
 		} else {
 			fmt.Println("└──🗎", filePath)
 		}
 	}
-	return nil
 }
 
 func main() {
-	err := scanDirectory("getfloat")
-	if err != nil {
-		log.Fatal(err)
-	}
+	defer reportPanic()
+	// simulating a different panic scenario where type assertion fails.
+	// panic("some other issue")
+	scanDirectory("getfloat")
 }
