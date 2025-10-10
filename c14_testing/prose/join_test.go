@@ -1,37 +1,25 @@
 package prose
 
 import (
-	"fmt"
 	"testing"
 )
 
-func TestOneElement(t *testing.T) {
-	list := []string{"apple"}
-	want := "apple"
-	got := JoinWithComma(list)
-	if got != want {
-		t.Error(errorString(list, got, want))
-	}
+type testData struct {
+	list []string
+	want string
 }
 
-func TestTwoElements(t *testing.T) {
-	list := []string{"apple", "orange"}
-	want := "apple and orange"
-	got := JoinWithComma(list)
-	if got != want {
-		t.Error(errorString(list, got, want))
+func TestJoinWithComma(t *testing.T) {
+	tests := []testData{
+		{list: []string{}, want: ""},
+		{list: []string{"apple"}, want: "apple"},
+		{list: []string{"apple", "orange"}, want: "apple and orange"},
+		{list: []string{"apple", "orange", "pear"}, want: "apple, orange, and pear"},
 	}
-}
-
-func TestThreeElements(t *testing.T) {
-	list := []string{"apple", "orange", "pear"}
-	want := "apple, orange, and pear"
-	got := JoinWithComma(list)
-	if got != want {
-		t.Error(errorString(list, got, want))
+	for _, test := range tests {
+		got := JoinWithComma(test.list)
+		if got != test.want {
+			t.Errorf("JoinWithComma(%#v) = \"%s\", want \"%s\"", test.list, got, test.want)
+		}
 	}
-}
-
-func errorString(list []string, got string, want string) string {
-	return fmt.Sprintf("JoinWithComma(%#v) = \"%s\", want \"%s\"", list, got, want)
 }
